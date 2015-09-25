@@ -199,12 +199,16 @@
     <Compile Include="Authentication\UserStore.cs" />
     <Compile Include="Common\DbConnectionProvider.cs" />
     <Compile Include="Common\IoC.cs" />
+    <Compile Include="Common\JsonContent.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Dtos\AuthTokenDto.cs" />
     <Compile Include="Dtos\BasicLoginDto.cs" />
+    <Compile Include="ErrorHandlers\GlobalExceptionFilter.cs" />
+    <Compile Include="ErrorHandlers\GlobalExceptionHandler.cs" />
+    <Compile Include="Models\ValidationError.cs" />
+    <Compile Include="ErrorHandlers\ValidationException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
