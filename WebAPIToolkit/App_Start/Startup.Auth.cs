@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
@@ -8,10 +9,12 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Owin;
 using WebAPIToolkit.Authentication;
 using WebAPIToolkit.Controllers;
-using WebAPIToolkit.Providers;
+using WebAPIToolkit.Database;
 using WebAPIToolkit.Models;
 
 namespace WebAPIToolkit
@@ -29,7 +32,7 @@ namespace WebAPIToolkit
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(ModelContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user
@@ -72,6 +75,16 @@ namespace WebAPIToolkit
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+        }
+
+        public void ConfigureJsonSerializer()
+        {
+            // Tell Newtonsoft to serialize to Json using CamelCase
+            var formatters = GlobalConfiguration.Configuration.Formatters;
+            var jsonFormatter = formatters.JsonFormatter;
+            var settings = jsonFormatter.SerializerSettings;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

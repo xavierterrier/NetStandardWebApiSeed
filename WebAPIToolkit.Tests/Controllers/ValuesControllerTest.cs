@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.Owin.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebAPIToolkit;
 using WebAPIToolkit.Controllers;
@@ -11,22 +14,22 @@ using WebAPIToolkit.Controllers;
 namespace WebAPIToolkit.Tests.Controllers
 {
     [TestClass]
-    public class ValuesControllerTest
+    public class ValuesControllerTest : BaseControllerTest
     {
         [TestMethod]
-        public void Get()
+        public async Task Get()
         {
-            // Arrange
-            ValuesController controller = new ValuesController();
-
-            // Act
-            IEnumerable<string> result = controller.Get();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("value1", result.ElementAt(0));
-            Assert.AreEqual("value2", result.ElementAt(1));
+            using (var server = TestServer.Create<Startup>())
+            {
+                using (var client = new HttpClient(server.Handler))
+                {
+                    var token = await GetValidBearerToken(client);
+                    client.DefaultRequestHeaders.Add("Authorization", $"bearer {token}");
+                    
+                    var response = await client.GetAsync($"http://testserver/{BaseController.Version}/values");
+                    Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+                }
+            }
         }
 
         [TestMethod]

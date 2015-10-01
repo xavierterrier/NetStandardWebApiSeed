@@ -14,9 +14,9 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using WebAPIToolkit.Authentication;
+using WebAPIToolkit.Common;
 using WebAPIToolkit.Dtos;
 using WebAPIToolkit.Models;
-using WebAPIToolkit.Providers;
 using WebAPIToolkit.Results;
 
 namespace WebAPIToolkit.Controllers
@@ -29,12 +29,13 @@ namespace WebAPIToolkit.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
+
         public AccountController()
         {
+            UserManager = new ApplicationUserManager();
         }
 
-        public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(ApplicationUserManager userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
@@ -46,7 +47,7 @@ namespace WebAPIToolkit.Controllers
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager; // ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -151,7 +152,7 @@ namespace WebAPIToolkit.Controllers
 
         // POST api/Account/ChangePassword
         [Route("changePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -171,7 +172,7 @@ namespace WebAPIToolkit.Controllers
 
         // POST api/Account/SetPassword
         [Route("setPassword")]
-        public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
+        public async Task<IHttpActionResult> SetPassword(SetPasswordDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -190,7 +191,7 @@ namespace WebAPIToolkit.Controllers
 
         // POST api/Account/AddExternalLogin
         [Route("addExternalLogin")]
-        public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
+        public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -228,7 +229,7 @@ namespace WebAPIToolkit.Controllers
 
         // POST api/Account/RemoveLogin
         [Route("removeLogin")]
-        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
+        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -357,7 +358,7 @@ namespace WebAPIToolkit.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(RegisterDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -380,7 +381,7 @@ namespace WebAPIToolkit.Controllers
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("registerExternal")]
-        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
+        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalDto model)
         {
             if (!ModelState.IsValid)
             {

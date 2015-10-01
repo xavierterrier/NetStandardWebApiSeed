@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Owin;
+using WebAPIToolkit.Common;
 
 [assembly: OwinStartup(typeof(WebAPIToolkit.Startup))]
 
@@ -14,16 +9,36 @@ namespace WebAPIToolkit
 {
     public partial class Startup
     {
+
+        public static bool UnitTests = false;
+
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            // Initialize IoC
+            if (UnitTests)
+            {
+                IoC.UnitTestInitialize();
+            }
+            else
+            {
+                IoC.Initialize();
+            }
 
-            // Tell Newtonsoft to serialize to Json using CamelCase
-            var formatters = GlobalConfiguration.Configuration.Formatters;
-            var jsonFormatter = formatters.JsonFormatter;
-            var settings = jsonFormatter.SerializerSettings;
-            settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var configuration = new HttpConfiguration();
+            WebApiConfig.Register(configuration);
+            // FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            // RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
+            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ConfigureAuth(app);
+            ConfigureJsonSerializer();
+
+            app.UseWebApi(configuration);
         }
+
+        
     }
 }

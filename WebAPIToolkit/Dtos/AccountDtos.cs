@@ -1,19 +1,17 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAPIToolkit.Models
+namespace WebAPIToolkit.Dtos
 {
     // Models used as parameters to AccountController actions.
 
-    public class AddExternalLoginBindingModel
+    public class AddExternalLoginDto
     {
         [Required]
         [Display(Name = "External access token")]
         public string ExternalAccessToken { get; set; }
     }
 
-    public class ChangePasswordBindingModel
+    public class ChangePasswordDto
     {
         [Required]
         [DataType(DataType.Password)]
@@ -32,7 +30,7 @@ namespace WebAPIToolkit.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class RegisterBindingModel
+    public class RegisterDto
     {
         [Required]
         [Display(Name = "Email")]
@@ -50,14 +48,14 @@ namespace WebAPIToolkit.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class RegisterExternalBindingModel
+    public class RegisterExternalDto
     {
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
 
-    public class RemoveLoginBindingModel
+    public class RemoveLoginDto
     {
         [Required]
         [Display(Name = "Login provider")]
@@ -68,7 +66,7 @@ namespace WebAPIToolkit.Models
         public string ProviderKey { get; set; }
     }
 
-    public class SetPasswordBindingModel
+    public class SetPasswordDto
     {
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

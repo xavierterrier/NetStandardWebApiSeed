@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using WebAPIToolkit.Common;
 
 namespace WebAPIToolkit
 {
@@ -19,6 +20,9 @@ namespace WebAPIToolkit
 
             // Attributes routing
             config.MapHttpAttributeRoutes();
+
+            // Dependency Resolver
+            config.DependencyResolver = new UnityResolver(IoC.Container);
 
 
             // Convention-based routing is not used as it is usually a good idea to use Attribute routing

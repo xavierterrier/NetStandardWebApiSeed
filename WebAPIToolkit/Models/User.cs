@@ -8,6 +8,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace WebAPIToolkit.Models
 {
+    /// <summary>
+    /// A basic user...    
+    /// </summary>
     public class User : IUser<int>
     {
         [Key]

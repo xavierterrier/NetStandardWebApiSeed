@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using WebAPIToolkit.Common;
 using WebAPIToolkit.Models;
 
 namespace WebAPIToolkit.Authentication
@@ -9,16 +10,21 @@ namespace WebAPIToolkit.Authentication
 
     public class ApplicationUserManager : UserManager<User, int>
     {
-        public ApplicationUserManager(UserStore store)
+
+        public ApplicationUserManager() : base(IoC.Resolve<IUserStore<User, int>>())
+        {
+            
+        }
+
+        public ApplicationUserManager(IUserStore<User, int> store)
             : base(store)
         {
-
+            
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
-        {
-
-            var manager = new ApplicationUserManager(new WebAPIToolkit.Authentication.UserStore()); // TODO: Ioc
+        {            
+            var manager = new ApplicationUserManager(IoC.Resolve<IUserStore<User, int>>());
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User, int>(manager)
             {

@@ -1,31 +1,41 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Http.Dependencies;
+using Microsoft.AspNet.Identity;
+using Microsoft.Practices.Unity;
+using WebAPIToolkit.Authentication;
+using WebAPIToolkit.Database;
+using WebAPIToolkit.Models;
 
 namespace WebAPIToolkit.Common
 {
-    public static class IoC
+    public static class IoC //TODO: Move this to UnityResolver or App_Start
     {
         private static IUnityContainer _container;
 
         static IoC()
         {
             _container = new UnityContainer();
-            Initialize();
         }
 
         public static void Initialize()
         {
-
+            _container.RegisterType<IDbProvider, DbProvider>();
+            _container.RegisterType<IUserStore<User, int>, EntityFrameworkUserStore>();
 
             //_container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(),
             //   new InjectionFactory(l => new Logger.Logger(connectionString, databaseName, "Logs", loggerName)));
+        }
 
-            //_container.RegisterType<MailTools>(new ContainerControlledLifetimeManager(),
-            //   new InjectionFactory(l => new MailTools(SmtpSettings.Settings.Host, SmtpSettings.Settings.Port, SmtpSettings.Settings.UseSSL, SmtpSettings.Settings.Username, SmtpSettings.Settings.Password)));
+        public static void UnitTestInitialize()
+        {
+            _container.RegisterType<IDbProvider, FakeDbProvider>();
+            _container.RegisterType<IUserStore<User, int>, EntityFrameworkUserStore>();
         }
 
 
 
-        private static IUnityContainer Container
+        public static IUnityContainer Container
         {
             get
             {
@@ -37,9 +47,20 @@ namespace WebAPIToolkit.Common
             }
         }
 
+        public static IUnityContainer CreateChildContainer()
+        {
+            return _container.CreateChildContainer();
+        }
+
+
         public static T Resolve<T>()
         {
             return _container.Resolve<T>();
+        }
+
+        public static object Resolve(Type t)
+        {
+            return _container.Resolve(t);
         }
     }
 }
