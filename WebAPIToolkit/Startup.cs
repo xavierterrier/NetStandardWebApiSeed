@@ -1,7 +1,9 @@
 ﻿using System.Web.Http;
 using Microsoft.Owin;
 using Owin;
+using Swashbuckle.Application;
 using WebAPIToolkit.Common;
+using WebAPIToolkit.Controllers;
 
 [assembly: OwinStartup(typeof(WebAPIToolkit.Startup))]
 
@@ -35,6 +37,10 @@ namespace WebAPIToolkit
 
             ConfigureAuth(app);
             ConfigureJsonSerializer();
+
+            configuration
+            .EnableSwagger("docs/{apiVersion}/swagger", c => c.SingleApiVersion(BaseController.Version, "WebAPI Toolkit"))
+            .EnableSwaggerUi();
 
             app.UseWebApi(configuration);
         }
