@@ -43,13 +43,6 @@ namespace WebAPIToolkit.Authentication
                 db.Users.Attach(user);
                 db.Entry(user).State = EntityState.Modified;
 
-                //var original = await db.Users.FindAsync(user.Id);
-                //if (original == null)
-                //{
-                //    throw new Exception($"User {user.Id} doest not exist");
-                //}
-                //db.Entry(original).CurrentValues.SetValues(user);
-
                 await db.SaveChangesAsync();
             }
 

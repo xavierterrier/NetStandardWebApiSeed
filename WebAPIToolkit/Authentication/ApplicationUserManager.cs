@@ -11,7 +11,7 @@ namespace WebAPIToolkit.Authentication
     public class ApplicationUserManager : UserManager<User, int>
     {
 
-        public ApplicationUserManager() : base(IoC.Resolve<IUserStore<User, int>>())
+        public ApplicationUserManager() : base(UnityResolver.Resolve<IUserStore<User, int>>())
         {
             
         }
@@ -24,7 +24,7 @@ namespace WebAPIToolkit.Authentication
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {            
-            var manager = new ApplicationUserManager(IoC.Resolve<IUserStore<User, int>>());
+            var manager = new ApplicationUserManager(UnityResolver.Resolve<IUserStore<User, int>>());
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User, int>(manager)
             {

@@ -19,11 +19,11 @@ namespace WebAPIToolkit
             // Initialize IoC
             if (UnitTests)
             {
-                IoC.UnitTestInitialize();
+                UnityResolver.UnitTestInitialize();
             }
             else
             {
-                IoC.Initialize();
+                UnityResolver.Initialize();
             }
 
             var configuration = new HttpConfiguration();
@@ -38,13 +38,26 @@ namespace WebAPIToolkit
             ConfigureAuth(app);
             ConfigureJsonSerializer();
 
+            // Enable swagger docs
+            // See https://github.com/domaindrivendev/Swashbuckle for details
             configuration
-            .EnableSwagger("docs/{apiVersion}/swagger", c => c.SingleApiVersion(BaseController.Version, "WebAPI Toolkit"))
+            .EnableSwagger("swagger/{apiVersion}/docs", (c) =>
+            {
+                c.SingleApiVersion(BaseController.Version, "WebAPI Toolkit");
+                c.IncludeXmlComments(GetXmlCommentsPath());
+            })
             .EnableSwaggerUi();
+            
+            
 
             app.UseWebApi(configuration);
         }
 
-        
+        protected static string GetXmlCommentsPath()
+        {
+            return $@"{System.AppDomain.CurrentDomain.BaseDirectory}\bin\WebAPIToolkit.XML";
+        }
+
+
     }
 }

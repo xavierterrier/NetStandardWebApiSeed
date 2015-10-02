@@ -3,11 +3,18 @@ using System.Data.Entity.Core.EntityClient;
 
 namespace WebAPIToolkit.Database
 {
+    /// <summary>
+    /// EntityFrameowrk database provider
+    /// </summary>
     public class DbProvider : IDbProvider
     {
-        public ModelContext GetModelContext()
+        /// <summary>
+        /// Get ApplicationContext
+        /// </summary>
+        /// <returns></returns>
+        public ApplicationContext GetModelContext()
         {
-            return new ModelContext();
+            return new ApplicationContext();
         }
     }
 }

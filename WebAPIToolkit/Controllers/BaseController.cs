@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
+﻿using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace WebAPIToolkit.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]    
+    [EnableCors(origins: "*", headers: "*", methods: "*")] // Enable Cors for all origins
     public class BaseController : ApiController
     {
-        public const string Version = "v1.0";
+        public const string Version = "v1.0"; // Our API Version
 
         /// <summary>
-        /// Get the current user identity
+        /// Get the current user identity. This works work any type of authentication (bearertoken, sso, whatever).
         /// </summary>
         /// <returns></returns>
         protected IIdentity GetCurrentUser()

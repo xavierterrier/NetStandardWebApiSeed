@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -8,13 +7,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using WebAPIToolkit.Authentication;
-using WebAPIToolkit.Common;
 using WebAPIToolkit.Dtos;
 using WebAPIToolkit.Models;
 using WebAPIToolkit.Results;
@@ -55,13 +51,13 @@ namespace WebAPIToolkit.Controllers
             }
         }
 
-
-        /// <summary>
-        /// Get Bearer token given a username and a password,
-        /// Note that you can implement a SSO method without dto as parameters
+        /// <summary>        
+        /// Get Bearer token given a username and a password
         /// </summary>
-        /// <param name="loginDto"></param>
-        /// <returns></returns>
+        /// <remarks>You can easily implement a similar SSO method : Remove [AllowAnonymous], remove loginDto params and enable windows authentication in web server</remarks>
+        /// <param name="loginDto">The username and password</param>
+        /// <response code="401">Not authorized</response>
+        /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
         [Route("token")]
         [HttpPost]
@@ -86,14 +82,18 @@ namespace WebAPIToolkit.Controllers
             };
         }
 
-        // GET api/Account/UserInfo
+        /// <summary>        
+        /// Get User basic information when login with an external provider 
+        /// </summary>
+        /// <response code="401">Not authorized</response>
+        /// <response code="500">Internal Server Error</response>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("userInfo")]
-        public UserInfoViewModel GetUserInfo()
+        public UserInfoDto GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            return new UserInfoViewModel
+            return new UserInfoDto
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
@@ -101,7 +101,9 @@ namespace WebAPIToolkit.Controllers
             };
         }
 
-        // POST api/Account/Logout
+        /// <summary>        
+        /// Logout
+        /// </summary>
         [Route("logout")]
         public IHttpActionResult Logout()
         {
@@ -109,48 +111,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        [Route("manageInfo")]
-        public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
-        {
-            User user = await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
-
-            // TODO : Reactivate for social logins
-            //foreach (IdentityUserLogin linkedAccount in user.Logins)
-            //{
-            //    logins.Add(new UserLoginInfoViewModel
-            //    {
-            //        LoginProvider = linkedAccount.LoginProvider,
-            //        ProviderKey = linkedAccount.ProviderKey
-            //    });
-            //}
-
-            if (user.PasswordHash != null)
-            {
-                logins.Add(new UserLoginInfoViewModel
-                {
-                    LoginProvider = LocalLoginProvider,
-                    ProviderKey = user.UserName,
-                });
-            }
-
-            return new ManageInfoViewModel
-            {
-                LocalLoginProvider = LocalLoginProvider,
-                Email = user.UserName,
-                Logins = logins,
-                ExternalLoginProviders = GetExternalLogins(returnUrl, generateState)
-            };
-        }
-
-        // POST api/Account/ChangePassword
+        /// <summary>        
+        /// Change password
+        /// </summary>
         [Route("changePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordDto model)
         {
@@ -170,26 +133,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        // POST api/Account/SetPassword
-        [Route("setPassword")]
-        public async Task<IHttpActionResult> SetPassword(SetPasswordDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId<int>(), model.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-        // POST api/Account/AddExternalLogin
+        /// <summary>        
+        /// Attach an external (social) login to user account
+        /// </summary>
         [Route("addExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginDto model)
         {
@@ -227,37 +173,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        // POST api/Account/RemoveLogin
-        [Route("removeLogin")]
-        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result;
-
-            if (model.LoginProvider == LocalLoginProvider)
-            {
-                result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId<int>());
-            }
-            else
-            {
-                result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId<int>(),
-                    new UserLoginInfo(model.LoginProvider, model.ProviderKey));
-            }
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-
-        // GET api/Account/ExternalLogin
+        //// <summary>        
+        //// Get a specific external (social) login provider
+        //// </summary>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
@@ -314,13 +232,15 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
+        //// <summary>        
+        //// Get external (social) logins providers
+        //// </summary>
         [AllowAnonymous]
         [Route("externalLogins")]
-        public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
+        public IEnumerable<ExternalLoginProviderDto> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-            List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
+            List<ExternalLoginProviderDto> logins = new List<ExternalLoginProviderDto>();
 
             string state;
 
@@ -336,7 +256,7 @@ namespace WebAPIToolkit.Controllers
 
             foreach (AuthenticationDescription description in descriptions)
             {
-                ExternalLoginViewModel login = new ExternalLoginViewModel
+                ExternalLoginProviderDto login = new ExternalLoginProviderDto
                 {
                     Name = description.Caption,
                     Url = Url.Route("ExternalLogin", new
@@ -355,7 +275,9 @@ namespace WebAPIToolkit.Controllers
             return logins;
         }
 
-        // POST api/Account/Register
+        /// <summary>        
+        /// Create a new user
+        /// </summary>
         [AllowAnonymous]
         [Route("register")]
         public async Task<IHttpActionResult> Register(RegisterDto model)
@@ -377,7 +299,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        // POST api/Account/RegisterExternal
+        /// <summary>        
+        /// Create a new user using an external provider cookie
+        /// </summary>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("registerExternal")]

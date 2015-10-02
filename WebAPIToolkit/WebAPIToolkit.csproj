@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\WebAPIToolkit.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -179,15 +180,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\ApplicationUserManager.cs" />
     <Compile Include="Authentication\EntityFrameworkUserStore.cs" />
     <Compile Include="Common\UnityResolver.cs" />
     <Compile Include="Database\DbProvider.cs" />
-    <Compile Include="Common\IoC.cs" />
     <Compile Include="Common\JsonContent.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -196,13 +194,14 @@
     <Compile Include="Database\IDbProvider.cs" />
     <Compile Include="Dtos\AuthTokenDto.cs" />
     <Compile Include="Dtos\BasicLoginDto.cs" />
+    <Compile Include="Dtos\ExternalLoginProviderDto.cs" />
+    <Compile Include="Dtos\UserInfoDto.cs" />
     <Compile Include="ErrorHandlers\GlobalExceptionFilter.cs" />
     <Compile Include="ErrorHandlers\GlobalExceptionHandler.cs" />
     <Compile Include="Models\ValidationError.cs" />
     <Compile Include="ErrorHandlers\ValidationException.cs" />
     <Compile Include="Dtos\AccountDtos.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Database\ModelContext.cs" />
+    <Compile Include="Database\ApplicationContext.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authentication\ApplicationOAuthProvider.cs" />

@@ -6,23 +6,26 @@ using System.Web;
 
 namespace WebAPIToolkit.Database
 {
-    // Use Effort (https://effort.codeplex.com/wikipage?title=Tutorials&referringTitle=Home) to simulate database
+    /// <summary>
+    /// Use Effort (https://effort.codeplex.com/wikipage?title=Tutorials&referringTitle=Home) to simulate a database
+    /// </summary>
     public class FakeDbProvider : IDbProvider
     {
 
-        private static readonly DbConnection Context = Effort.DbConnectionFactory.CreateTransient();
+        private static readonly DbConnection Context;
 
         static FakeDbProvider()
         {
             Context = Effort.DbConnectionFactory.CreateTransient();
         }
 
-        
-
-
-        public ModelContext GetModelContext()
+        /// <summary>
+        /// Get ApplicationContext
+        /// </summary>
+        /// <returns></returns>
+        public ApplicationContext GetModelContext()
         {
-            return new ModelContext(Context);
+            return new ApplicationContext(Context);
         }
     }
 }

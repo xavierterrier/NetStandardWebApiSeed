@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
 using WebAPIToolkit.Common;
 
 namespace WebAPIToolkit
 {
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Register WebApiConfig
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -22,7 +21,7 @@ namespace WebAPIToolkit
             config.MapHttpAttributeRoutes();
 
             // Dependency Resolver
-            config.DependencyResolver = new UnityResolver(IoC.Container);
+            config.DependencyResolver = new UnityResolver();
 
 
             // Convention-based routing is not used as it is usually a good idea to use Attribute routing
