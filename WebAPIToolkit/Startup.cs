@@ -36,7 +36,7 @@ namespace WebAPIToolkit
             //RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             ConfigureAuth(app);
-            ConfigureJsonSerializer();
+            ConfigureJsonSerializer(configuration);
 
             // Enable swagger docs
             // See https://github.com/domaindrivendev/Swashbuckle for details

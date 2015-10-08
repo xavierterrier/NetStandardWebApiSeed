@@ -71,7 +71,7 @@ namespace WebAPIToolkit
             //});
         }
 
-        public void ConfigureJsonSerializer()
+        public void ConfigureJsonSerializer(HttpConfiguration configuration)
         {
             // Tell Newtonsoft to serialize to Json using CamelCase
             var formatters = GlobalConfiguration.Configuration.Formatters;
