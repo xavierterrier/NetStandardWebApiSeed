@@ -11,6 +11,7 @@ using Swashbuckle.Application;
 using WebAPIToolkit.Common;
 using WebAPIToolkit.Common.Authentication;
 using WebAPIToolkit.Controllers;
+using WebAPIToolkit.DtoMappers;
 using WebAPIToolkit.Model.Database;
 
 [assembly: OwinStartup(typeof(WebAPIToolkit.Startup))]
@@ -85,8 +86,9 @@ namespace WebAPIToolkit
                 c.IncludeXmlComments(GetXmlCommentsPath());
             })
             .EnableSwaggerUi();
-            
-            
+
+            // Init Automapper mappings
+            AutoMapperMapping.Configure();
 
             app.UseWebApi(configuration);
         }
