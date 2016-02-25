@@ -1,5 +1,3 @@
-using WebAPIToolkit.Model.Database;
-
 namespace WebAPIToolkit.Migrations
 {
     using System;
@@ -7,15 +5,15 @@ namespace WebAPIToolkit.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<WebAPIToolkit.Model.Database.ApplicationContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "WebAPIToolkit.Database.ApplicationContext";
+            ContextKey = "WebAPIToolkit.Model.Database.ApplicationContext";
         }
 
-        protected override void Seed(ApplicationContext context)
+        protected override void Seed(WebAPIToolkit.Model.Database.ApplicationContext context)
         {
             //  This method will be called after migrating to the latest version.
 

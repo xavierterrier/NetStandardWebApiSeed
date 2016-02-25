@@ -19,7 +19,6 @@ namespace WebAPIToolkit.Model
 
         public virtual ICollection<Role> Roles { get; set; }
 
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager, string authenticationType)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

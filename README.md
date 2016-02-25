@@ -26,6 +26,7 @@ This is a default Asp.Net WebApi .Net 4.6 Template with several modifications:
 * If you update the model, see [Code First Migrations](https://msdn.microsoft.com/en-us/data/jj591621). Basically, in the Package Manager Console run :
 ```
 
+PM> Enable-Migrations
 PM> Add-Migration
 PM> Update-Database
 ```

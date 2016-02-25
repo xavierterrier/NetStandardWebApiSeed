@@ -10,7 +10,7 @@ using WebAPIToolkit.Model.Database;
 
 namespace WebAPIToolkit.Controllers
 {
-   // [Authorize] // User must be authentified except if specified
+    [Authorize] // User must be authentified except if specified
     [RoutePrefix(Version + "/projects")] // The Base route
     public class ProjectsController : BaseController
     {

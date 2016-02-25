@@ -56,10 +56,7 @@ namespace WebAPIToolkit
 
             var configuration = new HttpConfiguration {DependencyResolver = new UnityResolver()};
 
-            // Configure Web API to use only bearer token authentication.
-            // Change OAuthDefaults.AuthenticationType if you want to change "Bearer" string in Authentication HEADER
-            configuration.SuppressDefaultHostAuthentication();
-            configuration.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
 
             // Attributes routing
             configuration.MapHttpAttributeRoutes();
@@ -74,7 +71,7 @@ namespace WebAPIToolkit
             //);
 
 
-            ConfigureAuth(app);
+            ConfigureAuth(app, configuration);
             ConfigureJsonSerializer(configuration);
 
             // Enable swagger docs
@@ -99,8 +96,14 @@ namespace WebAPIToolkit
         /// For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         /// </summary>
         /// <param name="app"></param>
-        private void ConfigureAuth(IAppBuilder app)
+        /// <param name="configuration"></param>
+        private void ConfigureAuth(IAppBuilder app, HttpConfiguration configuration)
         {
+            // Configure Web API to use only bearer token authentication.
+            // Change OAuthDefaults.AuthenticationType if you want to change "Bearer" string in Authentication HEADER
+            configuration.SuppressDefaultHostAuthentication();
+            configuration.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
@@ -162,7 +165,10 @@ namespace WebAPIToolkit
             // serialize to Json using CamelCase
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            // Serialize C# enum as string
+            // Remove all converters
+            settings.Converters.Clear();
+
+            // Serialize C# enum as string            
             settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
         }
 

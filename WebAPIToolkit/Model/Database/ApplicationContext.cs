@@ -37,5 +37,7 @@ namespace WebAPIToolkit.Model.Database
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<Project> Projects { get; set; }
+
+        public DbSet<ProjectTask> Tasks { get; set; }
     }
 }
