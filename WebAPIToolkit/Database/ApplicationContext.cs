@@ -6,12 +6,13 @@ using WebAPIToolkit.Models;
 namespace WebAPIToolkit.Database
 {
     /// <summary>
-    /// The EF application context
+    /// The EF application context.
+    /// This is the main class that coordinates Entity Framework functionality for a given data model.
     /// </summary>
     public class ApplicationContext : DbContext
     {
 
-        public ApplicationContext() : base("ModelContextDatabase")
+        public ApplicationContext() : base("ModelContextDatabase") // Web.config must contain a connectionstring "ModelContextDatabase"
         {
 
         }
@@ -29,6 +30,11 @@ namespace WebAPIToolkit.Database
         }
 
 
+        /// <summary>
+        /// The users set
+        /// </summary>
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
     }
 }

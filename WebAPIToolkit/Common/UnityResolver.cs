@@ -18,6 +18,9 @@ namespace WebAPIToolkit.Common
             _container = new UnityContainer();
         }
 
+        /// <summary>
+        /// Inject real storage items
+        /// </summary>
         public static void Initialize()
         {
             _container.RegisterType<IDbProvider, DbProvider>();
@@ -27,6 +30,9 @@ namespace WebAPIToolkit.Common
             //   new InjectionFactory(l => new Logger.Logger(connectionString, databaseName, "Logs", loggerName)));
         }
 
+        /// <summary>
+        /// Inject MOQs
+        /// </summary>
         public static void UnitTestInitialize()
         {
             _container.RegisterType<IDbProvider, FakeDbProvider>();
@@ -38,7 +44,6 @@ namespace WebAPIToolkit.Common
             return _container.CreateChildContainer();
         }
 
-
         public static T Resolve<T>()
         {
             return _container.Resolve<T>();
@@ -49,6 +54,11 @@ namespace WebAPIToolkit.Common
             return _container.Resolve(t);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceType"></param>
+        /// <returns></returns>
         public object GetService(Type serviceType)
         {
             try

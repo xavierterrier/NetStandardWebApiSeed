@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.Owin.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebAPIToolkit;
 using WebAPIToolkit.Controllers;
 
 namespace WebAPIToolkit.Tests.Controllers
@@ -16,6 +11,10 @@ namespace WebAPIToolkit.Tests.Controllers
     [TestClass]
     public class ValuesControllerTest : BaseControllerTest
     {
+        /// <summary>
+        /// This is an example of an integration test
+        /// </summary>
+        /// <returns></returns>
         [TestMethod]
         public async Task Get()
         {
@@ -28,6 +27,9 @@ namespace WebAPIToolkit.Tests.Controllers
                     
                     var response = await client.GetAsync($"http://testserver/{BaseController.Version}/values");
                     Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+
+                    var dtos = await response.Content.ReadAsAsync<IEnumerable<string>>();
+                    Assert.IsNotNull(dtos);
                 }
             }
         }

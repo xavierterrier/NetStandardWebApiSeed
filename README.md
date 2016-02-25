@@ -13,6 +13,18 @@ This is a default Asp.Net WebApi .Net 4.6 Template with several modifications:
 * GlobalExceptionFilter.cs catch all errors raised in a Controller call
 * GlobalExceptionHandler.cs catch all errors outside a controller call
 
+## Testing ##
+* OWIN tests has been setup to make integration tests (see examples in WebAPIToolkit.Tests.Controllers.*)
+
+## Generated Documentation ##
+* Swagger is enabled and is accessible at http://WEBAPIURL/swagger
+
+## Database ##
+* EntityFramework is used as ORM.
+* The database specified in web.config in connectionstring "ModelContextDatabase" is used
+* If the database is empty, EntityFramework will initialize it on first API call accessing database (it can be disabled using disableDatabaseInitialization)
+* If you update the model, several strategies are possible :  [Code First Migrations](https://msdn.microsoft.com/en-us/data/jj591621). For convenience, you can run
+
 ## Misc. ##
 * Convention based routing is disable (see WebApiConfig.cs to enable it)
 * CORS has been enabled for all origins (see BaseController.cs)

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebAPIToolkit.Controllers;
@@ -21,6 +17,11 @@ namespace WebAPIToolkit.Tests.Controllers
             Startup.UnitTests = true;
         }
 
+        /// <summary>
+        /// This helper initialize a test user and return a valid Beared token
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         public async Task<string> GetValidBearerToken(HttpClient client)
         {
             var registerDto = new RegisterDto()

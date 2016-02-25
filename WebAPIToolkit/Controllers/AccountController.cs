@@ -17,6 +17,9 @@ using WebAPIToolkit.Results;
 
 namespace WebAPIToolkit.Controllers
 {
+    /// <summary>
+    /// The account Controller used for authentication
+    /// </summary>
     [Authorize]
     [RoutePrefix(Version + "/account")] // The Base route
     public class AccountController : BaseController
@@ -347,10 +350,7 @@ namespace WebAPIToolkit.Controllers
 
         #region Helpers
 
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager Authentication => Request.GetOwinContext().Authentication;
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {

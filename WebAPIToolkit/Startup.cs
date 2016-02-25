@@ -9,11 +9,21 @@ using WebAPIToolkit.Controllers;
 
 namespace WebAPIToolkit
 {
+    /// <summary>
+    /// This is the entry point of WebAPI
+    /// </summary>
     public partial class Startup
     {
 
+        /// <summary>
+        /// By settings this to true, MOQ are injected instead of real storage items (DB or whatever)
+        /// </summary>
         public static bool UnitTests = false;
 
+        /// <summary>
+        /// OWIN Configuration
+        /// </summary>
+        /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
             // Initialize IoC
@@ -28,12 +38,6 @@ namespace WebAPIToolkit
 
             var configuration = new HttpConfiguration();
             WebApiConfig.Register(configuration);
-            // FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            // RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            //GlobalConfiguration.Configure(WebApiConfig.Register);
-            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            //RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             ConfigureAuth(app);
             ConfigureJsonSerializer(configuration);

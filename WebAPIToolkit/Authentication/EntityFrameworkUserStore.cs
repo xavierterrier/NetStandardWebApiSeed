@@ -11,7 +11,7 @@ namespace WebAPIToolkit.Authentication
     /// <summary>
     /// This is a basic implementation of UserStore that use EntityFramework
     /// </summary>
-    public class EntityFrameworkUserStore : IUserStore<User, int>, IUserPasswordStore<User, int>//, IUserLoginStore<User>
+    public class EntityFrameworkUserStore : IUserPasswordStore<User, int>//, IUserLoginStore<User>
     {
         private readonly IDbProvider _dbProvider;
 
@@ -72,6 +72,9 @@ namespace WebAPIToolkit.Authentication
         {
             using (var db = _dbProvider.GetModelContext())
             {
+
+                // var users = db.Users.Where(u => u.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
+
                 var users = from u in db.Users
                             where u.UserName == userName
                             select u;

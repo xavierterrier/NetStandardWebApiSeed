@@ -6,7 +6,7 @@ namespace WebAPIToolkit.Controllers
     /// <summary>
     /// Controller Example    
     /// </summary>
-    [Authorize]
+    [Authorize] // User must be authentified except if specified
     [RoutePrefix(Version + "/values")] // The Base route
     public class ValuesController : BaseController
     {
