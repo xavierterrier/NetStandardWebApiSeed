@@ -21,9 +21,14 @@ This is a default Asp.Net WebApi .Net 4.6 Template with several modifications:
 
 ## Database ##
 * EntityFramework is used as ORM.
-* The database specified in web.config in connectionstring "ModelContextDatabase" is used
+* The database specified in web.config in connectionstring "ModelContextDatabase" is used.
 * If the database is empty, EntityFramework will initialize it on first API call accessing database (it can be disabled using disableDatabaseInitialization)
-* If you update the model, several strategies are possible :  [Code First Migrations](https://msdn.microsoft.com/en-us/data/jj591621). For convenience, you can run
+* If you update the model, see [Code First Migrations](https://msdn.microsoft.com/en-us/data/jj591621). Basically, in the Package Manager Console run :
+```
+
+PM> Add-Migration
+PM> Update-Database
+```
 
 ## Misc. ##
 * Convention based routing is disable (see WebApiConfig.cs to enable it)

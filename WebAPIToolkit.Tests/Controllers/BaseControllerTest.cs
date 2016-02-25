@@ -26,20 +26,20 @@ namespace WebAPIToolkit.Tests.Controllers
         {
             var registerDto = new RegisterDto()
             {
-                Email = "test2@test.com",
+                Username = "test2",
                 Password = "testtest2",
                 ConfirmPassword = "testtest2"
             };
 
             var basicLoginDto = new BasicLoginDto()
             {
-                Username = registerDto.Email,
+                Username = registerDto.Username,
                 Password = registerDto.Password
             };
 
             await client.PostAsJsonAsync($"http://testserver/{BaseController.Version}/account/register", registerDto);
 
-            var response2 = await client.PostAsJsonAsync($"http://testserver/{BaseController.Version}/account/token", basicLoginDto);
+            var response2 = await client.PostAsJsonAsync($"http://testserver/{BaseController.Version}/account/login", basicLoginDto);
             var authToken = await response2.Content.ReadAsAsync<AuthTokenDto>();
 
             Assert.AreEqual(HttpStatusCode.OK, response2.StatusCode);

@@ -1,7 +1,4 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Core.EntityClient;
-
-namespace WebAPIToolkit.Database
+﻿namespace WebAPIToolkit.Model.Database
 {
     /// <summary>
     /// EntityFrameowrk database provider

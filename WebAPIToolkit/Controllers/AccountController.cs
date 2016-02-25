@@ -10,10 +10,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using WebAPIToolkit.Authentication;
+using WebAPIToolkit.Common.Authentication;
 using WebAPIToolkit.Dtos;
-using WebAPIToolkit.Models;
-using WebAPIToolkit.Results;
+using WebAPIToolkit.Model;
 
 namespace WebAPIToolkit.Controllers
 {
@@ -57,12 +56,13 @@ namespace WebAPIToolkit.Controllers
         /// <summary>        
         /// Get Bearer token given a username and a password
         /// </summary>
-        /// <remarks>You can easily implement a similar SSO method : Remove [AllowAnonymous], remove loginDto params and enable windows authentication in web server</remarks>
+        /// <remarks>You can easily implement a similar SSO method : Remove [AllowAnonymous], remove loginDto params and enable windows authentication in Web server</remarks>
         /// <param name="loginDto">The username and password</param>
         /// <response code="401">Not authorized</response>
         /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
-        [Route("token")]
+        [Route("login", Order=1)]
+        [Route("~/login", Order = 2)] // To be compatible with Java Rest API
         [HttpPost]
         public async Task<AuthTokenDto> GetBearerToken(BasicLoginDto loginDto)
         {
@@ -192,7 +192,7 @@ namespace WebAPIToolkit.Controllers
 
             if (!User.Identity.IsAuthenticated)
             {
-                return new ChallengeResult(provider, this);
+                return new ChallengeResultDto(provider, this);
             }
 
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
@@ -205,7 +205,7 @@ namespace WebAPIToolkit.Controllers
             if (externalLogin.LoginProvider != provider)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                return new ChallengeResult(provider, this);
+                return new ChallengeResultDto(provider, this);
             }
 
             User user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
@@ -290,7 +290,7 @@ namespace WebAPIToolkit.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new User() {UserName = model.Email}; //, Email = model.Email };
+            var user = new User() {UserName = model.Username }; //, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

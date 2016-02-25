@@ -1,27 +1,39 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using WebAPIToolkit.Common;
-using WebAPIToolkit.Models;
+using WebAPIToolkit.Model;
 
-namespace WebAPIToolkit.Authentication
+namespace WebAPIToolkit.Common.Authentication
 {
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-
+    /// <summary>
+    /// Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+    /// </summary>
     public class ApplicationUserManager : UserManager<User, int>
     {
-
+        /// <summary>
+        /// The default constructor wich used IoC to retrieved UserStore
+        /// </summary>
         public ApplicationUserManager() : base(UnityResolver.Resolve<IUserStore<User, int>>())
         {
             
         }
 
+        /// <summary>
+        /// Constructor using a given UserStore
+        /// </summary>
+        /// <param name="store"></param>
         public ApplicationUserManager(IUserStore<User, int> store)
             : base(store)
         {
             
         }
 
+        /// <summary>
+        /// Creates an ApplicationUserManager with default settings
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {            
             var manager = new ApplicationUserManager(UnityResolver.Resolve<IUserStore<User, int>>());

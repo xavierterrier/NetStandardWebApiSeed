@@ -1,9 +1,8 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
 using WebAPIToolkit.Common;
-using WebAPIToolkit.Models;
 
-namespace WebAPIToolkit.Database
+namespace WebAPIToolkit.Model.Database
 {
     /// <summary>
     /// The EF application context.
@@ -36,5 +35,7 @@ namespace WebAPIToolkit.Database
         public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
     }
 }

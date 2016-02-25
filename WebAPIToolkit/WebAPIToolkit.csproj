@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebAPIToolkit</RootNamespace>
     <AssemblyName>WebAPIToolkit</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +89,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
@@ -96,16 +98,15 @@
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -129,6 +130,7 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.1.0\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
@@ -185,34 +187,61 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\ApplicationUserManager.cs" />
-    <Compile Include="Authentication\EntityFrameworkUserStore.cs" />
+    <Compile Include="Common\Authentication\ApplicationUserManager.cs" />
+    <Compile Include="Common\Authentication\EntityFrameworkUserStore.cs" />
     <Compile Include="Common\UnityResolver.cs" />
     <Compile Include="Controllers\PingController.cs" />
-    <Compile Include="Database\DbProvider.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="DtoMappers\AutoMapperMapping.cs" />
+    <Compile Include="Dtos\ProjectDto.cs" />
+    <Compile Include="Migrations\201602251309009_v05.cs" />
+    <Compile Include="Migrations\201602251309009_v05.Designer.cs">
+      <DependentUpon>201602251309009_v05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Database\DbProvider.cs" />
     <Compile Include="Common\JsonContent.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Database\FakeDbProvider.cs" />
-    <Compile Include="Database\IDbProvider.cs" />
+    <Compile Include="Model\Database\FakeDbProvider.cs" />
+    <Compile Include="Model\Database\IDbProvider.cs" />
     <Compile Include="Dtos\AuthTokenDto.cs" />
     <Compile Include="Dtos\BasicLoginDto.cs" />
+    <Compile Include="Dtos\Errors\LevelEnum.cs" />
+    <Compile Include="Dtos\Errors\FieldErrorDto.cs" />
     <Compile Include="Dtos\ExternalLoginProviderDto.cs" />
     <Compile Include="Dtos\UserInfoDto.cs" />
-    <Compile Include="ErrorHandlers\GlobalExceptionFilter.cs" />
-    <Compile Include="ErrorHandlers\GlobalExceptionHandler.cs" />
-    <Compile Include="Models\Role.cs" />
-    <Compile Include="Models\ValidationError.cs" />
-    <Compile Include="ErrorHandlers\ValidationException.cs" />
+    <Compile Include="Common\ErrorHandlers\GlobalExceptionFilter.cs" />
+    <Compile Include="Common\ErrorHandlers\GlobalExceptionHandler.cs" />
+    <Compile Include="Migrations\201602231415495_InitialCreate.cs" />
+    <Compile Include="Migrations\201602231415495_InitialCreate.Designer.cs">
+      <DependentUpon>201602231415495_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602250859356_v0.2.cs" />
+    <Compile Include="Migrations\201602250859356_v0.2.Designer.cs">
+      <DependentUpon>201602250859356_v0.2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602250906144_v03.cs" />
+    <Compile Include="Migrations\201602250906144_v03.Designer.cs">
+      <DependentUpon>201602250906144_v03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602250910278_v04.cs" />
+    <Compile Include="Migrations\201602250910278_v04.Designer.cs">
+      <DependentUpon>201602250910278_v04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Enums.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\Role.cs" />
+    <Compile Include="Dtos\Errors\ValidationErrorDto.cs" />
+    <Compile Include="Common\ErrorHandlers\BadRequestException.cs" />
     <Compile Include="Dtos\AccountDtos.cs" />
-    <Compile Include="Database\ApplicationContext.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Model\Database\ApplicationContext.cs" />
+    <Compile Include="Model\Task.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Authentication\ApplicationOAuthProvider.cs" />
-    <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Common\Authentication\ApplicationOAuthProvider.cs" />
+    <Compile Include="Dtos\ChallengeResultDto.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +255,24 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602231415495_InitialCreate.resx">
+      <DependentUpon>201602231415495_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602250859356_v0.2.resx">
+      <DependentUpon>201602250859356_v0.2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602250906144_v03.resx">
+      <DependentUpon>201602250906144_v03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602250910278_v04.resx">
+      <DependentUpon>201602250910278_v04.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602251309009_v05.resx">
+      <DependentUpon>201602251309009_v05.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

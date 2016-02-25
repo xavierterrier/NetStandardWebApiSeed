@@ -3,29 +3,33 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using WebAPIToolkit.Database;
-using WebAPIToolkit.Models;
+using WebAPIToolkit.Model;
+using WebAPIToolkit.Model.Database;
 
-namespace WebAPIToolkit.Authentication
+namespace WebAPIToolkit.Common.Authentication
 {
     /// <summary>
-    /// This is a basic implementation of UserStore that use EntityFramework
+    /// This is a basic implementation of UserStore used by EntityFramework
     /// </summary>
-    public class EntityFrameworkUserStore : IUserPasswordStore<User, int>//, IUserLoginStore<User>
+    public class EntityFrameworkUserStore : IUserPasswordStore<User, int>
     {
         private readonly IDbProvider _dbProvider;
+        private bool _disposed;
 
-
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="dbProvider"></param>
         public EntityFrameworkUserStore(IDbProvider dbProvider)
         {
             _dbProvider = dbProvider;
         }
 
-        public void Dispose()
-        {
-
-        }
-
+        /// <summary>
+        /// Asynchronously inserts a new user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task CreateAsync(User user)
         {
             using (var db = _dbProvider.GetModelContext())
@@ -36,6 +40,11 @@ namespace WebAPIToolkit.Authentication
             }
         }
 
+        /// <summary>
+        /// Asynchronously updates a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task UpdateAsync(User user)
         {
             using (var db = _dbProvider.GetModelContext())
@@ -48,6 +57,11 @@ namespace WebAPIToolkit.Authentication
 
         }
 
+        /// <summary>
+        /// Asynchronously deletes a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task DeleteAsync(User user)
         {
             using (var db = _dbProvider.GetModelContext())
@@ -59,6 +73,11 @@ namespace WebAPIToolkit.Authentication
             }
         }
 
+        /// <summary>
+        /// Asynchronously finds a user using the specified identifier
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<User> FindByIdAsync(int userId)
         {
             using (var db = _dbProvider.GetModelContext())
@@ -68,6 +87,11 @@ namespace WebAPIToolkit.Authentication
 
         }
 
+        /// <summary>
+        /// Asynchronously finds a user by name
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public async Task<User> FindByNameAsync(string userName)
         {
             using (var db = _dbProvider.GetModelContext())
@@ -83,21 +107,52 @@ namespace WebAPIToolkit.Authentication
             }
         }
 
+        /// <summary>
+        /// Asynchronously sets the user password hash
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="passwordHash"></param>
+        /// <returns></returns>
         public Task SetPasswordHashAsync(User user, string passwordHash)
         {
             user.PasswordHash = passwordHash;
             return Task.FromResult(0);
         }
 
+        /// <summary>
+        /// Asynchronously gets the user password hash
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public Task<string> GetPasswordHashAsync(User user)
         {
             return Task.FromResult(user.PasswordHash);
         }
 
+        /// <summary>
+        /// Indicates whether the user has a password set
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public Task<bool> HasPasswordAsync(User user)
         {
             var hasPassword = String.IsNullOrEmpty(user.PasswordHash);
             return Task.FromResult(hasPassword);
+        }
+
+        /// <summary>
+        /// Public implementation of Dispose pattern callable by consumers 
+        /// </summary>
+        public void Dispose()
+        {
+
+            if (_disposed)
+                return;
+
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
+
+            _disposed = true;
         }
     }
 }

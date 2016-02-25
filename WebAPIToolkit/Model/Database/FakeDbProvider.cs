@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Common;
 
-namespace WebAPIToolkit.Database
+namespace WebAPIToolkit.Model.Database
 {
     /// <summary>
     /// Use Effort (https://effort.codeplex.com/wikipage?title=Tutorials&referringTitle=Home) to simulate a database

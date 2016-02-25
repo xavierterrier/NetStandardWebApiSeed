@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 
-namespace WebAPIToolkit.Models
+namespace WebAPIToolkit.Model
 {
     /// <summary>
     /// A basic user...    
@@ -17,7 +17,7 @@ namespace WebAPIToolkit.Models
         public string UserName { get; set; }
         public string PasswordHash { get; set; }
 
-        public IEnumerable<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
 
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager, string authenticationType)

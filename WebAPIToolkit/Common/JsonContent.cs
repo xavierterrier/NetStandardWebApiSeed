@@ -8,6 +8,9 @@ using Newtonsoft.Json.Linq;
 
 namespace WebAPIToolkit.Common
 {
+    /// <summary>
+    /// Json ContentType
+    /// </summary>
     public class JsonContent : HttpContent
     {
         private readonly JToken _value;

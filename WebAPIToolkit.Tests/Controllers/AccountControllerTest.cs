@@ -19,7 +19,7 @@ namespace WebAPIToolkit.Tests.Controllers
         {
             var dto = new RegisterDto()
             {
-                Email = "test@test.com",
+                Username = "test",
                 Password = "testtest",
                 ConfirmPassword = "testtest"
             };

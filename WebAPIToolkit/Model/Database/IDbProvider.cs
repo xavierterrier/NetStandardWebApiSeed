@@ -1,4 +1,4 @@
-﻿namespace WebAPIToolkit.Database
+﻿namespace WebAPIToolkit.Model.Database
 {
     /// <summary>
     ///  The database provider interface

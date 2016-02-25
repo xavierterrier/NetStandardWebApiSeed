@@ -3,15 +3,18 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 using Newtonsoft.Json.Linq;
-using WebAPIToolkit.Common;
 
-namespace WebAPIToolkit.ErrorHandlers
+namespace WebAPIToolkit.Common.ErrorHandlers
 {
     /// <summary>
     /// Catch all errors raised in a Controller call
     /// </summary>
     public class GlobalExceptionFilter : ExceptionFilterAttribute
     {
+        /// <summary>
+        /// An exception has been raised in a controller
+        /// </summary>
+        /// <param name="actionExecutedContext"></param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             var exception = actionExecutedContext.Exception;
@@ -19,11 +22,17 @@ namespace WebAPIToolkit.ErrorHandlers
             actionExecutedContext.Response = HandleExceptions(exception);
         }
 
+        /// <summary>
+        /// Do something with exception
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public HttpResponseMessage HandleExceptions(Exception ex)
         {
-            if (ex is ValidationException)
+            var exception = ex as BadRequestException;
+            if (exception != null)
             {
-                var typedEx = (ValidationException)ex;
+                var typedEx = exception;
 
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {

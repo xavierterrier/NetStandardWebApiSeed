@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace WebAPIToolkit.Results
+namespace WebAPIToolkit.Dtos
 {
-    public class ChallengeResult : IHttpActionResult
+    public class ChallengeResultDto : IHttpActionResult
     {
-        public ChallengeResult(string loginProvider, ApiController controller)
+        public ChallengeResultDto(string loginProvider, ApiController controller)
         {
             LoginProvider = loginProvider;
             Request = controller.Request;
