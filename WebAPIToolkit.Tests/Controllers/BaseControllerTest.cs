@@ -1,6 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.Owin.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebAPIToolkit.Controllers;
 using WebAPIToolkit.Dtos;
@@ -49,7 +53,31 @@ namespace WebAPIToolkit.Tests.Controllers
             return authToken.AccessToken;
         }
 
+        protected async Task<HttpClient> GetAuthentifiedClient()
+        {
+            var client = new AuthentifiedHttpClient();
+            var token = await GetValidBearerToken(client);
+            client.DefaultRequestHeaders.Add("Authorization", $"bearer {token}");
 
+            return client;
+        }
 
+        protected Uri GetURI(string url, IDictionary<string, string> parameters = null)
+        {
+            var builder = new UriBuilder(url) {Port = -1};
+            var query = HttpUtility.ParseQueryString(builder.Query);
+
+            if (parameters != null)
+            {
+                foreach (var param in parameters)
+                {
+                    query[param.Key] = param.Value;
+                }
+            }
+          
+            builder.Query = query.ToString();
+
+            return builder.Uri;
+        }
     }
 }

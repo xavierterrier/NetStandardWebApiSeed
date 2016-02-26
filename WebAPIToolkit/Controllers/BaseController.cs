@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Microsoft.AspNet.Identity;
 
 namespace WebAPIToolkit.Controllers
 {
@@ -17,6 +18,14 @@ namespace WebAPIToolkit.Controllers
         {
             IPrincipal principal = RequestContext.Principal;
             return principal?.Identity;
+        }
+
+        protected string GetCurrentUserId()
+        {
+            IPrincipal principal = RequestContext.Principal;
+            IIdentity identity = principal.Identity;
+
+            return identity.GetUserId();
         }
     }
 }

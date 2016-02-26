@@ -27,7 +27,7 @@ namespace WebAPIToolkit.Controllers
         /// <returns></returns>
         [Route("")]
         [HttpGet]
-        public async Task<IEnumerable<ProjectDto>> Get()
+        public async Task<IEnumerable<ProjectDto>> GetAll()
         {
             List<Project> projects;
             using (var db = _dbProvider.GetModelContext())
@@ -75,10 +75,10 @@ namespace WebAPIToolkit.Controllers
         /// <summary>
         /// Create new project
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="dto"></param>
         [Route("")]
         [HttpPost]
-        public async Task Post([FromBody]ProjectDto dto)
+        public async Task<ProjectDto> Create([FromBody]ProjectDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -91,15 +91,17 @@ namespace WebAPIToolkit.Controllers
                 db.Projects.Add(project);
                 await db.SaveChangesAsync();
             }
+
+            return AutoMapper.Mapper.Map<ProjectDto>(project);
         }
 
         /// <summary>
         /// Update the project
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="dto"></param>
         [Route("")]
         [HttpPut]
-        public async Task Put([FromBody]ProjectDto dto)
+        public async Task<ProjectDto> Update([FromBody]ProjectDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -114,11 +116,15 @@ namespace WebAPIToolkit.Controllers
 
                 await db.SaveChangesAsync();
             }
+
+            return AutoMapper.Mapper.Map<ProjectDto>(project);
         }
 
         /// <summary>
         /// Delete the project
         /// </summary>
+        [Route("{id}")]
+        [HttpDelete]
         public async Task Delete(int id)
         {
             using (var db = _dbProvider.GetModelContext())

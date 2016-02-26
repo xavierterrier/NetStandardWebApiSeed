@@ -13,7 +13,6 @@ namespace WebAPIToolkit.Tests.Controllers
     public class AccountControllerTest : BaseControllerTest
     {
 
-
         [TestMethod]
         public async Task Register()
         {
