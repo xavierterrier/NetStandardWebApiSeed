@@ -201,16 +201,11 @@
     <Compile Include="Migrations\201602251520001_InitialCreate.Designer.cs">
       <DependentUpon>201602251520001_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602251525424_v02.cs" />
-    <Compile Include="Migrations\201602251525424_v02.Designer.cs">
-      <DependentUpon>201602251525424_v02.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Database\DbProvider.cs" />
     <Compile Include="Common\JsonContent.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Model\Database\FakeDbProvider.cs" />
     <Compile Include="Model\Database\IDbProvider.cs" />
     <Compile Include="Dtos\AuthTokenDto.cs" />
@@ -254,9 +249,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602251520001_InitialCreate.resx">
       <DependentUpon>201602251520001_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602251525424_v02.resx">
-      <DependentUpon>201602251525424_v02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -93,8 +93,8 @@
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\BaseControllerTest.cs" />
     <Compile Include="Controllers\ProjectsControllerTest.cs" />
+    <Compile Include="Controllers\TasksControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\ValuesControllerTest.cs" />
     <Compile Include="TestConf.cs" />
   </ItemGroup>
   <ItemGroup>

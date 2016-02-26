@@ -81,12 +81,21 @@ namespace WebAPIToolkit.Controllers
         /// <returns></returns>
         [Route("~/" + Version + "/projects/{id}/tasks")]
         [HttpPost]
-        public async Task Create(TaskDto dto)
+        public async Task<TaskDto> Create([FromBody]TaskDto dto, int id)
         {
             if (!ModelState.IsValid)
             {
                 throw new BadRequestException(ModelState);
             }
+            if (dto.ProjectId.HasValue && dto.ProjectId.Value != id)
+            {
+                throw new BadRequestException("ProjectId", $"ProjectId specified in task should be {id}");
+            }
+
+            if (!dto.ProjectId.HasValue)
+                dto.ProjectId = id;
+
+
             var task = AutoMapper.Mapper.Map<ProjectTask>(dto);
 
             using (var db = _dbProvider.GetModelContext())
@@ -94,6 +103,8 @@ namespace WebAPIToolkit.Controllers
                 db.Tasks.Add(task);
                 await db.SaveChangesAsync();
             }
+
+            return AutoMapper.Mapper.Map<TaskDto>(task);
         }
 
         /// <summary>
@@ -102,18 +113,48 @@ namespace WebAPIToolkit.Controllers
         /// <returns></returns>
         [Route("~/" + Version + "/projects/{id}/tasks")]
         [HttpPut]
-        public async Task Update(TaskDto dto)
+        public async Task<TaskDto> Update([FromBody]TaskDto dto, int id)
         {
             if (!ModelState.IsValid)
             {
                 throw new BadRequestException(ModelState);
             }
+            if (dto.ProjectId.HasValue && dto.ProjectId.Value != id)
+            {
+                throw new BadRequestException("ProjectId", $"ProjectId specified in task should be {id}");
+            }
+
+            if (!dto.ProjectId.HasValue)
+                dto.ProjectId = id;
+
             var task = AutoMapper.Mapper.Map<ProjectTask>(dto);
 
             using (var db = _dbProvider.GetModelContext())
             {
                 db.Tasks.Attach(task);
                 db.Entry(task).State = EntityState.Modified;
+
+                await db.SaveChangesAsync();
+            }
+
+            return AutoMapper.Mapper.Map<TaskDto>(task);
+        }
+
+        /// <summary>
+        /// Delete the project
+        /// </summary>
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task Delete(int id)
+        {
+            using (var db = _dbProvider.GetModelContext())
+            {
+                var task = new ProjectTask()
+                {
+                    Id = id
+                };
+                db.Tasks.Attach(task);
+                db.Entry(task).State = EntityState.Deleted;
 
                 await db.SaveChangesAsync();
             }

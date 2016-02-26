@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Owin.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebAPIToolkit.Controllers;
 using WebAPIToolkit.Dtos;
@@ -15,7 +14,7 @@ namespace WebAPIToolkit.Tests.Controllers
     [TestClass]
     public class ProjectsControllerTest : BaseControllerTest
     {
-        private readonly string BaseUrl = $"http://testserver/{BaseController.Version}/projects";
+        private static string BaseUrl = $"http://testserver/{BaseController.Version}/projects";
 
         [TestMethod]
         public async Task Create()
@@ -37,7 +36,7 @@ namespace WebAPIToolkit.Tests.Controllers
                 var create = await CreateProject(client);
                 Assert.AreEqual(HttpStatusCode.OK, create.Item1.StatusCode);
                 create.Item2.Name = "New name";
-                var response = await client.PostAsJsonAsync(BaseUrl, create.Item2);
+                var response = await client.PutAsJsonAsync(BaseUrl, create.Item2);
                 var dto = await response.Content.ReadAsAsync<ProjectDto>();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual(create.Item2.Name, dto.Name);
@@ -90,8 +89,22 @@ namespace WebAPIToolkit.Tests.Controllers
             }
         }
 
+        [TestMethod]
+        public async Task Delete()
+        {
+            using (var client = await GetAuthentifiedClient())
+            {
+                var create = await CreateProject(client);
+                Assert.AreEqual(HttpStatusCode.OK, create.Item1.StatusCode);
+                //var uri = GetURI(BaseUrl, new Dictionary<string, string> {{"id", create.Item2.Id.ToString()}});
 
-        private async Task<Tuple<HttpResponseMessage, ProjectDto>> CreateProject(HttpClient client)
+                var response = await client.DeleteAsync($"{BaseUrl}/{create.Item2.Id.ToString()}");
+                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            }
+        }
+
+
+        public static async Task<Tuple<HttpResponseMessage, ProjectDto>> CreateProject(HttpClient client)
         {
             var dto = new ProjectDto()
             {
@@ -112,21 +125,6 @@ namespace WebAPIToolkit.Tests.Controllers
             dto = await response.Content.ReadAsAsync<ProjectDto>();
 
             return new Tuple<HttpResponseMessage, ProjectDto>(response, dto);
-        }
-
-
-        [TestMethod]
-        public async Task Delete()
-        {
-            using (var client = await GetAuthentifiedClient())
-            {
-                var create = await CreateProject(client);
-                Assert.AreEqual(HttpStatusCode.OK, create.Item1.StatusCode);
-                //var uri = GetURI(BaseUrl, new Dictionary<string, string> {{"id", create.Item2.Id.ToString()}});
-
-                var response = await client.DeleteAsync($"{BaseUrl}/{create.Item2.Id.ToString()}");
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-            }
         }
 
     }

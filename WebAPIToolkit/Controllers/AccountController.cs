@@ -176,9 +176,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        //// <summary>        
-        //// Get a specific external (social) login provider
-        //// </summary>
+        /// <summary>        
+        /// Get a specific external (social) login provider
+        /// </summary>
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
@@ -235,9 +235,9 @@ namespace WebAPIToolkit.Controllers
             return Ok();
         }
 
-        //// <summary>        
-        //// Get external (social) logins providers
-        //// </summary>
+        /// <summary>        
+        /// Get all available external (social) logins providers
+        /// </summary>
         [AllowAnonymous]
         [Route("externalLogins")]
         public IEnumerable<ExternalLoginProviderDto> GetExternalLogins(string returnUrl, bool generateState = false)

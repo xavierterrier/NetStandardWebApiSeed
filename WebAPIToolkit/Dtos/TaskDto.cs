@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using WebAPIToolkit.Model;
 
 namespace WebAPIToolkit.Dtos
 {
-    public class TaskDto : ProjectTask
+    public class TaskDto
     {
+        public int Id { get; set; }
 
+        public string Contact { get; set; }
+
+        public DateTime? DueDate { get; set; }
+
+        public string Manager { get; set; }
+
+        public string Name { get; set; }
+
+        public int? ProjectId { get; set; }
+
+        public Enums.State State { get; set; }
     }
 }

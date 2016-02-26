@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -10,6 +11,7 @@ using Owin;
 using Swashbuckle.Application;
 using WebAPIToolkit.Common;
 using WebAPIToolkit.Common.Authentication;
+using WebAPIToolkit.Common.ErrorHandlers;
 using WebAPIToolkit.Controllers;
 using WebAPIToolkit.DtoMappers;
 using WebAPIToolkit.Model.Database;
@@ -86,6 +88,10 @@ namespace WebAPIToolkit
 
             // Init Automapper mappings
             AutoMapperMapping.Configure();
+
+            // Attach Exception Handlers
+            configuration.Filters.Add(new GlobalExceptionFilter());
+            configuration.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
 
             app.UseWebApi(configuration);
         }

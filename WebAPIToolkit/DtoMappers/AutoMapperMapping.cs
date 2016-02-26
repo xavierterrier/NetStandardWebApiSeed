@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using WebAPIToolkit.Dtos;
 using WebAPIToolkit.Model;
 
@@ -16,7 +12,8 @@ namespace WebAPIToolkit.DtoMappers
             Mapper.CreateMap<ProjectDto, Project>();
 
             Mapper.CreateMap<ProjectTask, TaskDto>();
-            Mapper.CreateMap<TaskDto, ProjectTask>();
+            Mapper.CreateMap<TaskDto, ProjectTask>()
+                .ForMember(t => t.Project, opt => opt.MapFrom(dto => dto.ProjectId.HasValue ? new Project {Id = dto.ProjectId.Value} : null));
 
             //Mapper.CreateMap<TeachingSchoolSubject, TeachingSchoolSubjectDto>()
             //    .ForMember(d => d.Name, opt => opt.MapFrom(u => u.SchoolSubject != null ? u.SchoolSubject.Name : null))

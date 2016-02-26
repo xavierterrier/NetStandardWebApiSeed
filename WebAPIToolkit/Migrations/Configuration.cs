@@ -10,7 +10,6 @@ namespace WebAPIToolkit.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "WebAPIToolkit.Model.Database.ApplicationContext";
         }
 
         protected override void Seed(WebAPIToolkit.Model.Database.ApplicationContext context)
