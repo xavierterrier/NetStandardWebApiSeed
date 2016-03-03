@@ -29,17 +29,22 @@ namespace WebAPIToolkit.Common.ErrorHandlers
         /// <returns></returns>
         public HttpResponseMessage HandleExceptions(Exception ex)
         {
-            var exception = ex as BadRequestException;
-            if (exception != null)
+            var badEx = ex as BadRequestException;
+            if (badEx != null)
             {
-                var typedEx = exception;
-
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new JsonContent(JObject.FromObject(typedEx.ErrorsDto)),
+                    Content = new JsonContent(JObject.FromObject(badEx.ErrorsDto)),
                     ReasonPhrase = "Validation exception"
                 };
             }
+
+            var unEx = ex as UnauthorizedAccessException;
+            if (unEx != null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            }
+
 
             return new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {

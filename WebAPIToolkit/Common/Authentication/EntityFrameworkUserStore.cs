@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace WebAPIToolkit.Common.Authentication
     /// <summary>
     /// This is a basic implementation of UserStore used by EntityFramework
     /// </summary>
-    public class EntityFrameworkUserStore : IUserPasswordStore<User, int>
+    public class EntityFrameworkUserStore : IUserPasswordStore<User, int>, IUserRoleStore<User, int>
     {
         private readonly IDbProvider _dbProvider;
         private bool _disposed;
@@ -82,7 +83,7 @@ namespace WebAPIToolkit.Common.Authentication
         {
             using (var db = _dbProvider.GetModelContext())
             {
-                return await db.Users.FindAsync(userId);
+                return await db.Users.Include(u => u.Roles).SingleOrDefaultAsync(u=> u.Id == userId);
             }
 
         }
@@ -103,7 +104,7 @@ namespace WebAPIToolkit.Common.Authentication
                             where u.UserName == userName
                             select u;
 
-                return await users.FirstOrDefaultAsync();
+                return await users.Include(u => u.Roles).FirstOrDefaultAsync();
             }
         }
 
@@ -153,6 +154,30 @@ namespace WebAPIToolkit.Common.Authentication
             GC.SuppressFinalize(this);
 
             _disposed = true;
+        }
+
+        public Task AddToRoleAsync(User user, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFromRoleAsync(User user, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user)
+        {
+            IList<string> result = user.Roles?.Select(r => r.Name).ToList() ?? new List<string>();
+
+            return Task.FromResult(result);
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            var result = user.Roles?.Any(r => r.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase)) ?? false;
+
+            return Task.FromResult(result);
         }
     }
 }

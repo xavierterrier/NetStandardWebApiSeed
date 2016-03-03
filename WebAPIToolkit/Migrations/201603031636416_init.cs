@@ -3,7 +3,7 @@ namespace WebAPIToolkit.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -32,7 +32,7 @@ namespace WebAPIToolkit.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Type = c.String(),
+                        Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -45,6 +45,22 @@ namespace WebAPIToolkit.Migrations
                         PasswordHash = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ProjectTasks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Contact = c.String(),
+                        DueDate = c.DateTime(),
+                        Manager = c.String(),
+                        Name = c.String(),
+                        State = c.Int(nullable: false),
+                        Project_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Projects", t => t.Project_Id)
+                .Index(t => t.Project_Id);
             
             CreateTable(
                 "dbo.UserRoles",
@@ -63,11 +79,14 @@ namespace WebAPIToolkit.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.ProjectTasks", "Project_Id", "dbo.Projects");
             DropForeignKey("dbo.UserRoles", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.UserRoles", "User_Id", "dbo.Users");
             DropIndex("dbo.UserRoles", new[] { "Role_Id" });
             DropIndex("dbo.UserRoles", new[] { "User_Id" });
+            DropIndex("dbo.ProjectTasks", new[] { "Project_Id" });
             DropTable("dbo.UserRoles");
+            DropTable("dbo.ProjectTasks");
             DropTable("dbo.Users");
             DropTable("dbo.Roles");
             DropTable("dbo.Projects");

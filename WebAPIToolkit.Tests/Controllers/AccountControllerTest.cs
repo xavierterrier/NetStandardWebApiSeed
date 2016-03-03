@@ -36,7 +36,7 @@ namespace WebAPIToolkit.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task GetBearerToken()
+        public async Task Login()
         {
             using (var server = TestServer.Create<Startup>())
             {

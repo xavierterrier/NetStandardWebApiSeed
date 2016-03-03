@@ -187,19 +187,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Authentication\ApplicationRoleManager.cs" />
     <Compile Include="Common\Authentication\ApplicationUserManager.cs" />
+    <Compile Include="Common\Authentication\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Common\Authentication\EntityFrameworkRoleStore.cs" />
     <Compile Include="Common\Authentication\EntityFrameworkUserStore.cs" />
     <Compile Include="Common\UnityResolver.cs" />
-    <Compile Include="Controllers\PingController.cs" />
+    <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="DtoMappers\AutoMapperMapping.cs" />
     <Compile Include="Dtos\Errors\ValidationErrorDto.cs" />
     <Compile Include="Dtos\ProjectDto.cs" />
     <Compile Include="Dtos\TaskDto.cs" />
-    <Compile Include="Migrations\201602251520001_InitialCreate.cs" />
-    <Compile Include="Migrations\201602251520001_InitialCreate.Designer.cs">
-      <DependentUpon>201602251520001_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201603031636416_init.cs" />
+    <Compile Include="Migrations\201603031636416_init.Designer.cs">
+      <DependentUpon>201603031636416_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Database\DbProvider.cs" />
@@ -247,8 +250,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602251520001_InitialCreate.resx">
-      <DependentUpon>201602251520001_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201603031636416_init.resx">
+      <DependentUpon>201603031636416_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

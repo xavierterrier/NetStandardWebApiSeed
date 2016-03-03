@@ -9,7 +9,7 @@ namespace WebAPIToolkit.Model
     /// <summary>
     /// A basic user...    
     /// </summary>
-    public class User : IUser<int> 
+    public class User : IUser<int>
     {
         [Key]
         public int Id { get; set; }

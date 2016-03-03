@@ -34,6 +34,8 @@ namespace WebAPIToolkit.Common
         {
             Container.RegisterType<IDbProvider, DbProvider>();
             Container.RegisterType<IUserStore<User, int>, EntityFrameworkUserStore>();
+            Container.RegisterType<IRoleStore<Role, int>, EntityFrameworkRoleStore>();
+            
 
             //Container.RegisterType<ILogger>(new ContainerControlledLifetimeManager(),
             //   new InjectionFactory(l => new Logger.Logger(connectionString, databaseName, "Logs", loggerName)));
@@ -46,6 +48,7 @@ namespace WebAPIToolkit.Common
         {
             Container.RegisterType<IDbProvider, FakeDbProvider>();
             Container.RegisterType<IUserStore<User, int>, EntityFrameworkUserStore>();
+            Container.RegisterType<IRoleStore<Role, int>, EntityFrameworkRoleStore>();
         }
 
         /// <summary>

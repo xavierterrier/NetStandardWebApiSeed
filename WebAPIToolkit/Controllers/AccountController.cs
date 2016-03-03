@@ -139,6 +139,7 @@ namespace WebAPIToolkit.Controllers
         /// <summary>        
         /// Attach an external (social) login to user account
         /// </summary>
+        [Authorize(Roles = "admin")]
         [Route("addExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginDto model)
         {
@@ -281,7 +282,7 @@ namespace WebAPIToolkit.Controllers
         /// <summary>        
         /// Create a new user
         /// </summary>
-        [AllowAnonymous]
+        [Authorize(Roles = "admin")]
         [Route("register")]
         public async Task<IHttpActionResult> Register(RegisterDto model)
         {
